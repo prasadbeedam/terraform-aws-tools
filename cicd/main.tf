@@ -27,6 +27,14 @@ module "jenkins_agent" {
     Name = "jenkins-agent"
   }
 }
+resource "aws_key_pair" "tools" {
+  key_name   = "tools"
+  # you can paste the public key directly like this
+  #public_key = "Key"
+  public_key = file("~/.ssh/tools.pub")
+  # ~ means windows home directory
+}
+
 module "nexus" {
   source  = "terraform-aws-modules/ec2-instance/aws"
 
