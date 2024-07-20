@@ -4,11 +4,11 @@ Plugins:
 
 
 
-Pipeline stage view
-AnsiColor
-Pipeline Utility Steps
-Nexus Artifact Uploader
-Rebuild
+Pipeline stage view, 
+AnsiColor ,  
+Pipeline Utility Steps,  
+Nexus Artifact Uploader,  
+Rebuild , 
 Restart Jenkins once plugins are installed
 
 Configure aws credentials in jenkins agent. you should configure with normal user.
