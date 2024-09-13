@@ -4,8 +4,8 @@ module "jenkins" {
   name = "jenkins-tf"
 
   instance_type          = "t3.small"
-  vpc_security_group_ids = ["sg-04a8063bf88d0ec0c"] #replace your SG
-  subnet_id = "subnet-0534eac854c0e6cce" #replace your Subnet
+  vpc_security_group_ids = ["sg-0e297e9b1f1520384"] #replace your SG
+  subnet_id = "subnet-0acc875944031b03b" #replace your Subnet
   ami = data.aws_ami.ami_info.id
   user_data = file("jenkins.sh")
   tags = {
@@ -19,8 +19,8 @@ module "jenkins_agent" {
   name = "jenkins-agent"
 
   instance_type          = "t3.small"
-  vpc_security_group_ids = ["sg-04a8063bf88d0ec0c"] #replace your SG
-  subnet_id = "subnet-0534eac854c0e6cce" #replace your Subnet
+  vpc_security_group_ids = ["sg-0e297e9b1f1520384"] #replace your SG
+  subnet_id = "subnet-0acc875944031b03b" #replace your Subnet
   ami = data.aws_ami.ami_info.id
   user_data = file("agent.sh")
   tags = {
@@ -36,27 +36,27 @@ resource "aws_key_pair" "tools" {
   # ~ means windows home directory
 }
 
-module "nexus" {
-  source  = "terraform-aws-modules/ec2-instance/aws"
+# module "nexus" {
+#   source  = "terraform-aws-modules/ec2-instance/aws"
 
-  name = "nexus"
+#   name = "nexus"
 
-  instance_type          = "t3.medium"
-  vpc_security_group_ids = ["sg-04a8063bf88d0ec0c"]
-  # convert StringList to list and get first element
-  subnet_id = "subnet-0534eac854c0e6cce"
-  ami = data.aws_ami.nexus_ami_info.id
-   key_name = aws_key_pair.tools.key_name
-  root_block_device = [
-    {
-      volume_type = "gp3"
-      volume_size = 30
-    }
-  ]
-  tags = {
-    Name = "nexus"
-  }
-}
+#   instance_type          = "t3.medium"
+#   vpc_security_group_ids = ["sg-0e297e9b1f1520384"]
+#   # convert StringList to list and get first element
+#   subnet_id = "subnet-0acc875944031b03b"
+#   ami = data.aws_ami.nexus_ami_info.id
+#    key_name = aws_key_pair.tools.key_name
+#   root_block_device = [
+#     {
+#       volume_type = "gp3"
+#       volume_size = 30
+#     }
+#   ]
+#   tags = {
+#     Name = "nexus"
+#   }
+# }
 
 module "records" {
   source  = "terraform-aws-modules/route53/aws//modules/records"
@@ -82,16 +82,16 @@ module "records" {
         module.jenkins_agent.private_ip
       ]
       allow_overwrite = true
-    },
-    {
-      name    = "nexus"
-      type    = "A"
-      ttl     = 1
-      allow_overwrite = true
-      records = [
-        module.nexus.private_ip
-      ]
-      allow_overwrite = true
+    # },
+    # {
+    #   name    = "nexus"
+    #   type    = "A"
+    #   ttl     = 1
+    #   allow_overwrite = true
+    #   records = [
+    #     module.nexus.private_ip
+    #   ]
+    #   allow_overwrite = true
     }
   ]
 }
